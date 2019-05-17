@@ -33,16 +33,22 @@ def monitorLog():
 	count = 0
 	dqNote('log on')
 	while True:
-		line = p.stdout.readline().decode().strip()
-		if line:
+		if count < 10:
 			count = count + 1
-			if pattern in line:
-				monitor = 0
-				note("error line %s" %count +  ": " + line)
-				p.kill()
-				break
+			line = p.stdout.readline().decode().strip()
+			if line:
+				if pattern in line:
+					monitor = 0
+					note(line)
+					p.kill()
+					break
+		else:
+			count = 0
+			time.sleep(1)
+			p.kill()
+			p = subprocess.Popen('tail -f ' + logFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 		if monitor == 0:
-			dqNote('zzzZZZ')
+			p.kill()
 			break
 
 #获取zboot路径下的所有匹配tag的bat，并执行
@@ -101,6 +107,7 @@ def buttonEvent(a):
 	elif a == 'm1':
 		global monitor
 		monitor = 0
+		dqNote('zzzZZZ')
 	elif a == 'm2':
 		logFile = e.get()
 		logPath = os.path.dirname(os.path.abspath(logFile))
@@ -112,7 +119,7 @@ root.configure(background=cl[0])
 root.wm_attributes('-topmost',1)
 rowNow = 0
 
-photo=tk.PhotoImage(file=r".\\test.jpg")
+photo=tk.PhotoImage(file=r"test.jpg")
 label=tk.Label(root,image=photo, bd=0) .grid(row=rowNow, column=0, columnspan = 7)
 rowNow+=1
 
