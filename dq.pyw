@@ -97,8 +97,8 @@ def buttonEvent(a):
 		os.system("explorer.exe " + codePath[0])
 	elif a == 'm0':
 		global logFile, pattern
-		logFile = e.get()
-		pattern = e1.get()
+		logFile = e1.get()
+		pattern = e.get()
 		try:
 			threading.Thread(target=monitorLog, name="thread_1").start()
 			print("active thread num: ", threading.active_count())
@@ -109,7 +109,7 @@ def buttonEvent(a):
 		monitor = 0
 		dqNote('zzzZZZ')
 	elif a == 'm2':
-		logFile = e.get()
+		logFile = e1.get()
 		logPath = os.path.dirname(os.path.abspath(logFile))
 		subprocess.Popen("explorer.exe " + logPath,  shell=True)
 
